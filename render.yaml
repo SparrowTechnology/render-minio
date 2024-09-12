@@ -1,6 +1,6 @@
 services:
 - type: web
-  name: minio-server
+  name: sparrowacademy-dev-minio-server
   healthCheckPath: /minio/health/live
   runtime: image
   image:
@@ -31,7 +31,7 @@ services:
   
 
 - type: web
-  name: minio-console
+  name: sparrowacademy-dev-minio-console
   runtime: docker
   dockerContext: /
   dockerfilePath: ./Dockerfile
@@ -41,11 +41,11 @@ services:
     value: 10000
   - key: MINIO_HOST
     fromService:
-      name: minio-server
+      name: sparrowacademy-dev-minio-server
       type: web
       property: host
   - key: MINIO_CONSOLE_PORT
     fromService:
-      name: minio-server
+      name: sparrowacademy-dev-minio-server
       type: web
       envVarKey: CONSOLE_PORT
