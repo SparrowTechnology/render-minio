@@ -2,6 +2,7 @@ services:
 - type: web
   name: sparrowacademy-dev-minio-server
   healthCheckPath: /minio/health/live
+  region: ohio
   runtime: image
   image:
     url: docker.io/minio/minio:latest
@@ -32,6 +33,7 @@ services:
 
 - type: web
   name: sparrowacademy-dev-minio-console
+  region: ohio
   runtime: docker
   dockerContext: /
   dockerfilePath: ./Dockerfile
