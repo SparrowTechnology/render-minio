@@ -1,12 +1,14 @@
 services:
 - type: web
-  name: sparrowacademy-dev-minio
+  name: sparrowacademy-dev-minio-server
   healthCheckPath: /minio/health/live
-  region: ohio
   runtime: image
   image:
     url: docker.io/minio/minio:latest
-  dockerCommand: minio server /data --address $HOST:$PORT
+  dockerCommand: minio server /data --address $HOST:$PORT --console-address $HOST:$CONSOLE_PORT
+  # Use the following 'dockerCommand' if removing the 'minio-console'
+  # web service
+  # dockerCommand: minio server /data --address $HOST:$PORT
   autoDeploy: false
   disk:
     name: data
@@ -22,5 +24,28 @@ services:
     value: 9000
   - key: CONSOLE_PORT
     value: 9090
-  - key: MINIO_BROWSER
-    value: "off"
+  # Uncomment the following key/value pair if you are removing the
+  # 'minio-console' web service
+  # - key: MINIO_BROWSER
+  #   value: "off"
+  
+
+- type: web
+  name: sparrowacademy-dev-minio-console
+  runtime: docker
+  dockerContext: /
+  dockerfilePath: ./Dockerfile
+  autoDeploy: false
+  envVars:
+  - key: PORT
+    value: 10000
+  - key: MINIO_HOST
+    fromService:
+      name: minio-server
+      type: web
+      property: host
+  - key: MINIO_CONSOLE_PORT
+    fromService:
+      name: minio-server
+      type: web
+      envVarKey: CONSOLE_PORT
