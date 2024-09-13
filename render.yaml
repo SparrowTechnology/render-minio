@@ -1,6 +1,7 @@
 services:
 - type: web
   name: sparrowacademy-dev-minio-server
+  region: ohio
   healthCheckPath: /minio/health/live
   runtime: image
   image:
@@ -32,6 +33,7 @@ services:
 
 - type: web
   name: sparrowacademy-dev-minio-console
+  region: ohio
   runtime: docker
   dockerContext: /
   dockerfilePath: ./Dockerfile
